@@ -1,7 +1,7 @@
 html {
   background: #000000;
   font-family: System, monospace;
-  font-size: 10pt
+  font-size: 12pt
 }
 
 body {
@@ -75,7 +75,7 @@ button,
   color: white;
   font-family: inherit;
   font-size: inherit;
-  background: green;
+  background: #FF0000;
   padding: 0 1em;
   box-shadow: .5em .5em 3px rgba(0,0,0,.5);
   position: relative;
@@ -134,8 +134,8 @@ button:first-letter,
 }
 
 input, textarea {
-  background: blue;
-  color: aqua;
+  background: #F6F6F6;
+  color: #FF0000;
   width: 100%;
   max-width: 100%;
   font-size: 12pt;
@@ -147,9 +147,9 @@ input {
 }
 
 input:disabled {
-  background: #8F8F8F;
-  color: #ffffff;
-  border: 2px solid #8F8F8F;
+  background: #F6F6F6;
+  color: #FF0000;
+  border: 2px solid #BDBDBD;
 }
 
 input[type=radio],
