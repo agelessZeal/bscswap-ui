@@ -35,26 +35,16 @@ async function highlight_input() {
         el.css('background-color', 'blue');
 }
 
-function promiseTimeout(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 let promise = makeCancelable(Promise.resolve());
 async function set_to_amount() {
     promise.cancel();
     promise = setAmountPromise()
-        .then(async ([dy, dy_, dx_]) => {
+        .then(([dy, dy_, dx_]) => {
             $('#to_currency').val(dy);
             var exchange_rate = (dy_ / dx_).toFixed(4);
             if(exchange_rate <= 0.98) $("#to_currency").css('background-color', 'red')
             else $("#to_currency").css('background-color', '#505070')
             if(isNaN(exchange_rate)) exchange_rate = "Not available"
-            var default_account = (await web3provider.eth.getAccounts())[0];
-            let balance = await underlying_coins[to_currency].methods.balanceOf(default_account).call();
-            let amount = Math.floor(
-                    100 * parseFloat(balance) / coin_precisions[to_currency]
-                ) / 100
-            $('fieldset:nth-child(2) .maxbalance span').text(amount.toFixed(2))
             $('#exchange-rate').text(exchange_rate);
             $('#from_currency').prop('disabled', false);
         })
@@ -77,7 +67,7 @@ function setAmountPromise() {
         if (b >= 0.001) {
             // In c-units
             var dx_ = $('#from_currency').val();
-            var dx = cBN(Math.round(dx_ * coin_precisions[i])).toFixed(0,1);
+            var dx = cBN(Math.round(dx_ * coin_precisions[i]).toString()).toFixed(0,1);
             var dy_ = parseInt(await swap.methods.get_dy_underlying(i, j, dx).call()) / coin_precisions[j];
             var dy = dy_.toFixed(2);
             resolve([dy, dy_, dx_])
@@ -138,17 +128,15 @@ async function handle_trade() {
     if (b >= 0.001) {
         var dx = Math.floor($('#from_currency').val() * coin_precisions[i]);
         var min_dy = Math.floor($('#to_currency').val() * (1-max_slippage) * coin_precisions[j]);
-        var deadline = Math.floor((new Date()).getTime() / 1000) + trade_timeout;
-        dx = cBN(dx.toString()).toFixed(0);
+        dx = cBN(dx.toString()).toFixed(0,1);
         if ($('#inf-approval').prop('checked'))
             await ensure_underlying_allowance(i, max_allowance)
         else
             await ensure_underlying_allowance(i, dx);
-        min_dy = cBN(min_dy.toString()).toFixed(0);
+        min_dy = cBN(min_dy.toString()).toFixed(0,1);
         await swap.methods.exchange_underlying(i, j, dx, min_dy).send({
-                from: default_account,
-                gas: 1200000,
-            });
+            from: default_account,
+            gas: 1600000});
         
         await update_rates();
         update_fee_info();
@@ -172,8 +160,8 @@ async function init_ui() {
 
     $('#from_currency').on('input', debounced(100, set_to_amount));
     $('#from_currency').click(function() {this.select()});
-    $('fieldset:first .maxbalance').click(set_max_balance)
-    $("#max_slippage input[type='radio']").click(change_max_slippage)
+    $('fieldset:first .maxbalance').click(set_max_balance);
+    $("#max_slippage input[type='radio']").click(change_max_slippage);
 
     $("#trade").click(handle_trade);
     
@@ -194,9 +182,9 @@ window.addEventListener('load', async () => {
     }
     catch(err) {
         console.error(err)
-        if(err.reason == 'cancelDialog') {
+        if(err.reason == 'cancelDialog') {        
             const web3 = new newWeb3(infura_url);
-            window.web3provider = web3
+            window.web3provider = web3;
             window.web3 = web3
 
             await init_contracts();

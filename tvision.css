@@ -252,7 +252,7 @@ i:before, i:after { content: "/"; }
     text-align: center;
 }
 
-p[id^='chart'] {
+#chart {
     background-color: white;
     border: 1px solid gray;
 }
@@ -330,20 +330,6 @@ div.info table td {
   }
   #poolsdropdown > a:after {
     content: " Pools";
-  }
-}
-
-@media only screen and (max-device-width : 640px) {
-  span.poolstext, .pools {
-    width: auto;
-  }
-  
-  span.pooltext {
-    display: inline-block;
-  }
-
-  span.pools {
-    display: block;
   }
 }
 
@@ -489,26 +475,6 @@ div.info table td {
   }
 }
 
-.text-center {
-  text-align: center;
-}
-
-.lp-info-container {
-  display: none;
-}
-
-.loading.matrix::after {
-  content:"░ ░░░░\A░░ ░░░\A░░░ ░░\A░░░░ ░";
-  animation: spin .5s steps(4) infinite alternate;
-}
-
-.loading.matrix {
-  font-size: 3em;
-  background: transparent;
-  border: none;
-  margin: 0.5em;
-}
-
 .maxbalance {
   padding: 0.3em;
   text-align: right;
@@ -544,6 +510,10 @@ fieldset:nth-child(2) .maxbalance {
   display: flex;
   align-items: center;
   white-space: pre-wrap;
+}
+
+.blue.window.info, .donations {
+  word-break: break-word;
 }
 
 .donations a {

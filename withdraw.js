@@ -16,14 +16,13 @@ async function update_balances() {
         if(!default_account) balances[i] = 0
     }
     token_supply = parseInt(await swap_token.methods.totalSupply().call());
-    fee = parseInt(await swap.methods.fee().call()) / 1e10;
 }
 
 function handle_change_amounts(i) {
-    return async function() {
+return async function() {
         var real_values = [...$("[id^=currency_]")].map((x,i) => +($(x).val()));
         var values = [...$("[id^=currency_]")].map((x,i) => $(x).val() / c_rates[i])
-        values = values.map(v=>cBN(Math.floor(v).toString()).toFixed(0))
+        values = values.map(v=>cBN(Math.floor(v).toString()).toFixed(0,1))
         let show_nobalance = false;
         let show_nobalance_i = 0;
         for(let i = 0; i < N_COINS; i++) {
@@ -95,38 +94,42 @@ function handle_change_share() {
 }
 
 async function handle_remove_liquidity() {
-    var share = $('#liquidity-share');
-    var share_val = share.val();
-    var deadline = Math.floor((new Date()).getTime() / 1000) + trade_timeout;
-    var amounts = $("[id^=currency_]").toArray().map(x => $(x).val());
-    var min_amounts = []
-    for (let i = 0; i < N_COINS; i++) {
-        amounts[i] = cBN(Math.floor(amounts[i] / c_rates[i]).toString()).toFixed(0,1); // -> c-tokens
-        min_amounts[i] = cBN(0.97).multipliedBy(share_val/100).multipliedBy(cBN(balances[i]))
+    try {    
+        var share = $('#liquidity-share');
+        var share_val = share.val();
+        var amounts = $("[id^=currency_]").toArray().map(x => $(x).val());
+        var min_amounts = []
+        for (let i = 0; i < N_COINS; i++) {
+            amounts[i] = cBN(Math.floor(amounts[i] / c_rates[i]).toString()).toFixed(0,1); // -> c-tokens
+            min_amounts[i] = cBN(0.97).multipliedBy(share_val/100).multipliedBy(cBN(balances[i]))
             .multipliedBy(cBN(token_balance))
             .div(cBN(token_supply))
             .toFixed(0,1)
-    }
-    var txhash;
-    var default_account = (await web3provider.eth.getAccounts())[0];
-    if (share_val == '---') {
-        var token_amount = await swap.methods.calc_token_amount(amounts, false).call();
-        token_amount = cBN(Math.floor(token_amount * 1.01).toString()).toFixed(0,1)
-        await swap.methods.remove_liquidity_imbalance(amounts, token_amount).send({from: default_account, gas: 1000000});
-    }
-    else {
-        var amount = cBN(Math.floor(share_val / 100 * token_balance).toString()).toFixed(0,1);
-        if (share_val == 100)
-            amount = await swap_token.methods.balanceOf(default_account).call();
-        await swap.methods.remove_liquidity(amount, min_amounts).send({from: default_account, gas: 600000});
-    }
-    if(share_val != '---') {
-        for (let i = 0; i < N_COINS; i++) {
-            handle_change_amounts(i)();
         }
+        var txhash;
+        var default_account = (await web3provider.eth.getAccounts())[0];
+        if (share_val == '---') {
+            var token_amount = await swap.methods.calc_token_amount(amounts, false).call();
+            token_amount = cBN(Math.floor(token_amount * 1.01).toString()).toFixed(0,1)
+            await swap.methods.remove_liquidity_imbalance(amounts, token_amount).send({from: default_account, gas: 1000000});
+        }
+        else {
+            var amount = cBN(Math.floor(share_val / 100 * token_balance).toString()).toFixed(0,1);
+            if (share_val == 100)
+                amount = await swap_token.methods.balanceOf(default_account).call();
+            await swap.methods.remove_liquidity(amount, min_amounts).send({from: default_account, gas: 600000});
+        }
+        if(share_val != '---') {
+            for (let i = 0; i < N_COINS; i++) {
+                handle_change_amounts(i)();
+            }
+        }
+        await update_balances();
+        update_fee_info();
     }
-    await update_balances();
-    update_fee_info();
+    catch(err) {
+        console.error(err)
+    }
 }
 
 function init_ui() {
@@ -141,12 +144,9 @@ function init_ui() {
     update_fee_info();
 
     $("#remove-liquidity").click(handle_remove_liquidity);
-    $("#migrate-new").click(() => {
-        handle_migrate_new('new');
-    });
 }
 
-window.addEventListener('load', async () => {
+window.addEventListener('DOMContentLoaded', async () => {
     try {
         await init();
         await update_rates();
@@ -154,16 +154,16 @@ window.addEventListener('load', async () => {
         init_ui();
     }
     catch(err) {
-        console.error(err)
+        console.error(err);
         if(err.reason == 'cancelDialog') {
             const web3 = new newWeb3(infura_url);
-            window.web3provider = web3provider
+            window.web3provider = web3;
             window.web3 = web3
 
             await init_contracts();
             await update_rates();
             await update_balances();
-            init_ui();        
+            init_ui();
         }
     }
 });
