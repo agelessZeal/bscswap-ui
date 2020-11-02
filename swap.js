@@ -72,7 +72,7 @@ function setAmountPromise() {
             var dy = dy_.toFixed(2);
             resolve([dy, dy_, dx_])
         }
-        else { 
+        else {
             reject()
         }
     })
@@ -83,11 +83,6 @@ async function from_cur_handler() {
     from_currency = $('input[type=radio][name=from_cur]:checked').val();
     to_currency = $('input[type=radio][name=to_cur]:checked').val();
     var default_account = (await web3provider.eth.getAccounts())[0];
-
-    if (cBN(await underlying_coins[from_currency].methods.allowance(default_account, swap_address).call()).gt(max_allowance.div(cBN(2))))
-        $('#inf-approval').prop('checked', true)
-    else
-        $('#inf-approval').prop('checked', false);
 
     await set_from_amount(from_currency);
     if (to_currency == from_currency) {
@@ -129,15 +124,12 @@ async function handle_trade() {
         var dx = Math.floor($('#from_currency').val() * coin_precisions[i]);
         var min_dy = Math.floor($('#to_currency').val() * (1-max_slippage) * coin_precisions[j]);
         dx = cBN(dx.toString()).toFixed(0,1);
-        if ($('#inf-approval').prop('checked'))
-            await ensure_underlying_allowance(i, max_allowance)
-        else
-            await ensure_underlying_allowance(i, dx);
+        await ensure_underlying_allowance(i, max_allowance);
         min_dy = cBN(min_dy.toString()).toFixed(0,1);
         await swap.methods.exchange_underlying(i, j, dx, min_dy).send({
             from: default_account,
             gas: 1600000});
-        
+
         await update_rates();
         update_fee_info();
         from_cur_handler();
@@ -164,7 +156,7 @@ async function init_ui() {
     $("#max_slippage input[type='radio']").click(change_max_slippage);
 
     $("#trade").click(handle_trade);
-    
+
     await update_rates();
     update_fee_info();
     from_cur_handler();
@@ -182,7 +174,7 @@ window.addEventListener('load', async () => {
     }
     catch(err) {
         console.error(err)
-        if(err.reason == 'cancelDialog') {        
+        if(err.reason == 'cancelDialog') {
             const web3 = new newWeb3(infura_url);
             window.web3provider = web3;
             window.web3 = web3

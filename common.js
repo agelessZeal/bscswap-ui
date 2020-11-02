@@ -24,30 +24,18 @@ function approve(contract, amount, account) {
             });
 }
 
-async function ensure_allowance(amounts) {
+async function ensure_allowance() {
     var default_account = (await web3provider.eth.getAccounts())[0];
     var allowances = new Array(N_COINS);
     for (let i=0; i < N_COINS; i++)
         allowances[i] = await coins[i].methods.allowance(default_account, swap_address).call();
 
-    if (amounts) {
-        // Non-infinite
-        for (let i=0; i < N_COINS; i++) {
-            if (cBN(allowances[i]).isLessThan(amounts[i])) {
-                if (allowances[i] > 0)
-                    await approve(coins[i], 0, default_account);
-                await approve(coins[i], amounts[i], default_account);
-            }
-        }
-    }
-    else {
-        // Infinite
-        for (let i=0; i < N_COINS; i++) {
-            if (cBN(allowances[i]).isLessThan(max_allowance.div(cBN(2)))) {
-                if (allowances[i] > 0)
-                    await approve(coins[i], 0, default_account);
-                await approve(coins[i], max_allowance, default_account);
-            }
+    // Infinite
+    for (let i=0; i < N_COINS; i++) {
+        if (cBN(allowances[i]).isLessThan(max_allowance.div(cBN(2)))) {
+            if (allowances[i] > 0)
+                await approve(coins[i], 0, default_account);
+            await approve(coins[i], max_allowance, default_account);
         }
     }
 }

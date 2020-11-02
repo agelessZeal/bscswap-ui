@@ -39,12 +39,9 @@ async function handle_add_liquidity() {
             amounts[i] = cBN(Math.floor(amounts[i] / c_rates[i]).toString()).toFixed(0,1); // -> c-tokens
         }
     }
-    if ($('#inf-approval').prop('checked'))
-        await ensure_allowance(false)
-    else
-        await ensure_allowance(amounts);
+    await ensure_allowance();
     var token_amount = 0;
-    if(parseInt(await swap_token.methods.totalSupply().call()) > 0) {    
+    if(parseInt(await swap_token.methods.totalSupply().call()) > 0) {
         token_amount = await swap.methods.calc_token_amount(amounts, true).call();
         token_amount = cBN(Math.floor(token_amount * 0.99).toString()).toFixed(0,1);
     }
@@ -99,11 +96,6 @@ async function init_ui() {
         }));
     }
 
-    if (infapproval)
-        $('#inf-approval').prop('checked', true)
-    else 
-        $('#inf-approval').prop('checked', false);
-
     $('#sync-balances').change(handle_sync_balances);
     $('#max-balances').change(handle_sync_balances);
     $("#add-liquidity").click(handle_add_liquidity);
@@ -118,7 +110,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         update_fee_info();
         await handle_sync_balances();
         await calc_slippage(true);
-        
+
         await init_ui();
 
         $("#max-balances").prop('disabled', false);
@@ -126,7 +118,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
     catch(err) {
         console.error(err)
-        if(err.reason == 'cancelDialog') {        
+        if(err.reason == 'cancelDialog') {
             const web3 = new newWeb3(infura_url);
             window.web3provider = web3;
             window.web3 = web3
