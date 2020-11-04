@@ -19,7 +19,7 @@ async function init() {
         }
     };
 
-    const web3Modal = new Web3Modal.default.Core({
+    const web3Modal = new Web3Modal.default({
       network: "mainnet", // optional
       cacheProvider: true, // optional
       providerOptions // required
