@@ -21,6 +21,7 @@ async function init() {
     };
 
     const web3Connect = new Web3Connect.default.Core({
+      network: "mainnet", // optional
       cacheProvider: true, // optional
       providerOptions // required
     });

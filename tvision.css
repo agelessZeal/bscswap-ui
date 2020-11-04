@@ -347,6 +347,7 @@ div.info table td {
     height: 20px;
     padding: 6px;
     text-align: left;
+    color: #1DDB16;
 }
 .border-menu:before {
     border-bottom: 10px double black;
