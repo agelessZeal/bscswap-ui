@@ -32,7 +32,7 @@ async function highlight_input() {
     if (el.val() > balance)
         el.css('background-color', 'red')
     else
-        el.css('background-color', '#F6F6F6');
+        el.css('background-color', 'blue');
 }
 
 let promise = makeCancelable(Promise.resolve());
