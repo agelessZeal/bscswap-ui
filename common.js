@@ -71,22 +71,6 @@ async function ensure_token_allowance() {
 
 
 async function init_contracts() {
-    try {
-        let networkId = await web3provider.eth.net.getId();
-        let chainId = await web3provider.eth.chainId();
-        console.log(networkId);
-        console.log(chainId);
-        if(networkId != 56) {
-            $('#error-window').text('Error: wrong network type. Please switch to BSC mainnet');
-            $('#error-window').show();
-        }
-    }
-    catch(err) {
-        console.error(err);
-        $('#error-window').text('There was an error connecting. Please refresh page');
-        $('#error-window').show();
-    }
-
     swap = new web3provider.eth.Contract(swap_abi, swap_address);
     swap_token = new web3provider.eth.Contract(ERC20_abi, token_address);
 
