@@ -73,7 +73,7 @@ async function ensure_token_allowance() {
 async function init_contracts() {
     try {
         let networkId = await web3provider.eth.net.getId();
-        let networkId = await web3provider.eth.chainId();
+        let chainId = await web3provider.eth.chainId();
         console.log(networkId);
         console.log(chainId);
         if(networkId != 56) {
