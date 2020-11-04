@@ -73,6 +73,7 @@ async function ensure_token_allowance() {
 async function init_contracts() {
     try {
         let networkId = await web3provider.eth.net.getId();
+        console.log(networkId);
         if(networkId != 56) {
             $('#error-window').text('Error: wrong network type. Please switch to BSC mainnet');
             $('#error-window').show();
