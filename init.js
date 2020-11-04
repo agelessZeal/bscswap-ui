@@ -1,8 +1,8 @@
 let cancelablePromise;
 $(document).click(function(event) {
   $target = $(event.target);
-  if(!$target.closest('.web3connect-provider-wrapper').length &&
-  $('.web3connect-provider-wrapper').is(":visible") && cancelablePromise && (!window.web3provider || (window.web3provider && window.web3provider.version != '1.0.0-beta.34'))) {
+  if(!$target.closest('.web3modal-provider-wrapper').length &&
+  $('.web3modal-provider-wrapper').is(":visible") && cancelablePromise && (!window.web3provider || (window.web3provider && window.web3provider.version != '1.0.0-beta.34'))) {
     cancelablePromise.cancel('cancelDialog');
   }
 });
@@ -19,15 +19,15 @@ async function init() {
         }
     };
 
-    const web3Connect = new Web3Connect.default.Core({
+    const web3Modal = new Web3Modal.default.Core({
       network: "mainnet", // optional
       cacheProvider: true, // optional
       providerOptions // required
     });
 
-    window.web3Connect = web3Connect
+    window.web3Modal = web3Modal
 
-    const provider = web3Connect.connect();
+    const provider = web3Modal.connect();
     cancelablePromise = makeCancelable(provider);
     return cancelablePromise.then(async (provider) => {
         provider.on && provider.on("chainChanged", (chainId) => {
