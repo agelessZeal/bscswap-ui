@@ -14,7 +14,10 @@ async function init() {
         walletconnect: {
             package: WalletConnectProvider,
             options: {
-              infuraId: "be5dee544bc2437a9d9e6ca195fb09a2" // required
+              rpc: {
+                1: "https://bsc-dataseed1.defibit.io",
+                56: "https://bsc-dataseed1.defibit.io"
+              }
             }
         }
     };

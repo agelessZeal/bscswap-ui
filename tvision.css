@@ -347,11 +347,10 @@ div.info table td {
     height: 20px;
     padding: 6px;
     text-align: left;
-    color: #1DDB16;
 }
 .border-menu:before {
-    border-bottom: 10px double black;
-    border-top: 3px solid black;
+    border-bottom: 10px double green;
+    border-top: 3px solid green;
     content:"";
     height: 4px;
     position: absolute;
