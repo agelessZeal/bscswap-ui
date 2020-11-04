@@ -13,9 +13,11 @@ async function init() {
     const providerOptions = {
         walletconnect: {
             package: WalletConnectProvider,
-            rpc: {
-              1: "https://bsc-dataseed1.defibit.io",
-              56: "https://bsc-dataseed1.defibit.io"
+            options: {
+              rpc: {
+                1: "https://bsc-dataseed1.defibit.io",
+                56: "https://bsc-dataseed1.defibit.io"
+              }
             }
         }
     };
