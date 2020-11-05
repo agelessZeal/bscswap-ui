@@ -134,7 +134,7 @@ button:first-letter,
 }
 
 input, textarea {
-  background: #F6F6F6;
+  background: #808080;
   color: #1DDB16;
   width: 100%;
   max-width: 100%;
@@ -147,7 +147,7 @@ input {
 }
 
 input:disabled {
-  background: #F6F6F6;
+  background: #808080;
   color: #1DDB16;
   border: 2px solid #BDBDBD;
 }
