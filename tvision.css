@@ -225,7 +225,7 @@ li {
 }
 
 .top-menu-bar a.selected, .poolsdialog div:hover, .poolsdialog div:hover a, .poolsdialog div:hover a:visited {
-    background-color: white;
+    background-color: blue;
     color: white;
 }
 
