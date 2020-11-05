@@ -10,17 +10,7 @@ async function init() {
     init_menu();
 
     const WalletConnectProvider = window.WalletConnectProvider.default
-    const providerOptions = {
-        walletconnect: {
-            package: WalletConnectProvider,
-            options: {
-              rpc: {
-                1: "https://bsc-dataseed1.defibit.io",
-                56: "https://bsc-dataseed1.defibit.io"
-              }
-            }
-        }
-    };
+    const providerOptions = {};
 
     const web3Modal = new Web3Modal.default({
       network: "mainnet", // optional
