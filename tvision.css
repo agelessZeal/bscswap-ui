@@ -75,7 +75,7 @@ button,
   color: white;
   font-family: inherit;
   font-size: inherit;
-  background: #FF0000;
+  background: #1DDB16;
   padding: 0 1em;
   box-shadow: .5em .5em 3px rgba(0,0,0,.5);
   position: relative;
@@ -135,7 +135,7 @@ button:first-letter,
 
 input, textarea {
   background: #F6F6F6;
-  color: #FF0000;
+  color: #1DDB16;
   width: 100%;
   max-width: 100%;
   font-size: 12pt;
@@ -148,7 +148,7 @@ input {
 
 input:disabled {
   background: #F6F6F6;
-  color: #FF0000;
+  color: #1DDB16;
   border: 2px solid #BDBDBD;
 }
 
@@ -225,7 +225,7 @@ li {
 }
 
 .top-menu-bar a.selected, .poolsdialog div:hover, .poolsdialog div:hover a, .poolsdialog div:hover a:visited {
-    background-color: blue;
+    background-color: white;
     color: white;
 }
 
