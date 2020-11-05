@@ -88,7 +88,7 @@ async function init_ui() {
 
                         // Balance not enough highlight
                         if (newval > wallet_balances[j] * c_rates[j])
-                            el_j.css('background-color', 'red')
+                            el_j.css('background-color', 'gray')
                         else
                             el_j.css('background-color', 'blue');
                     }

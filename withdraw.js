@@ -49,7 +49,7 @@ return async function() {
             var maxAvailableAmount = parseInt(await swap_token.methods.balanceOf(default_account).call());
 
             if(availableAmount > maxAvailableAmount) {
-                $('[id^=currency_]').css('background-color', 'red');
+                $('[id^=currency_]').css('background-color', 'gray');
             }
             else {
                 $('[id^=currency_]').css('background-color', 'blue');
@@ -63,7 +63,7 @@ return async function() {
         }
         catch(err) {
             console.error(err)
-            $('[id^=currency_]').css('background-color', 'red');
+            $('[id^=currency_]').css('background-color', 'gray');
         }
     }
 }
@@ -79,7 +79,7 @@ function handle_change_share() {
         val = 0;
     }
     else if ((val > 100) | (val < 0))
-        share.css('background-color', 'red');
+        share.css('background-color', 'gray');
 
     for (let i = 0; i < N_COINS; i++) {
         var cur = $('#currency_' + i);
