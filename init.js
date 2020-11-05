@@ -9,7 +9,6 @@ $(document).click(function(event) {
 async function init() {
     init_menu();
 
-    const WalletConnectProvider = window.WalletConnectProvider.default
     const providerOptions = {};
 
     const web3Modal = new Web3Modal.default({
