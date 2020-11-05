@@ -23,7 +23,7 @@ body {
 }
 
 .window.error {
-    background: red;
+    background: #000000;
     box-shadow:
         0   0   0   3px red,
         1em 1em 3px 0 rgba(0,0,0,.5);
@@ -427,7 +427,7 @@ div.info table td {
 }
 
 .simple-error {
-  background: red;
+  background: #000000;
 }
 
 .info-message {
