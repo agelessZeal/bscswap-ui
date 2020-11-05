@@ -30,9 +30,9 @@ async function highlight_input() {
     var el = $('#from_currency');
     var balance = parseFloat(await underlying_coins[from_currency].methods.balanceOf(default_account).call()) / coin_precisions[from_currency];
     if (el.val() > balance)
-        el.css('background-color', 'red')
+        el.css('background-color', 'white')
     else
-        el.css('background-color', 'blue');
+        el.css('background-color', 'white');
 }
 
 let promise = makeCancelable(Promise.resolve());

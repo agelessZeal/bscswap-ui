@@ -65,9 +65,9 @@ async function init_ui() {
 
             var el = $('#currency_' + i);
             if (el.val() > wallet_balances[i] * c_rates[i])
-                el.css('background-color', 'red')
+                el.css('background-color', 'white')
             else
-                el.css('background-color', 'blue');
+                el.css('background-color', 'white');
 
             if (sync_balances) {
                 for (let j = 0; j < N_COINS; j++)
